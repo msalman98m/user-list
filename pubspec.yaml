@@ -1,0 +1,60 @@
+name: userlist
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.3
+  localstorage: ^4.0.1+4
+  shared_preferences: ^2.2.2
+  provider: ^6.1.1
+  flutter_svg: ^1.1.1+1
+  connectivity_plus: ^5.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svgIcons/
+    - assets/placeholders/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Thin.ttf
+        - asset: assets/fonts/Inter/Inter-Black.ttf
+        - asset: assets/fonts/Inter/Inter-Bold.ttf
+        - asset: assets/fonts/Inter/Inter-Light.ttf
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+        - asset: assets/fonts/Inter/Inter-SemiBold.ttf
+        - asset: assets/fonts/Inter/Inter-ExtraBold.ttf
+        - asset: assets/fonts/Inter/Inter-ExtraLight.ttf
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit/Outfit-Black.ttf
+        - asset: assets/fonts/Outfit/Outfit-Bold.ttf
+        - asset: assets/fonts/Outfit/Outfit-ExtraBold.ttf
+        - asset: assets/fonts/Outfit/Outfit-ExtraLight.ttf
+        - asset: assets/fonts/Outfit/Outfit-Light.ttf
+        - asset: assets/fonts/Outfit/Outfit-Medium.ttf
+        - asset: assets/fonts/Outfit/Outfit-Regular.ttf
+        - asset: assets/fonts/Outfit/Outfit-SemiBold.ttf
+        - asset: assets/fonts/Outfit/Outfit-Thin.ttf
