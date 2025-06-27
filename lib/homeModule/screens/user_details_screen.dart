@@ -40,7 +40,15 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       );
     }
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'User Details',
+          style: theme.textTheme.bodyLarge!.copyWith(
+            fontSize: tS * 20,
+            color: context.colors.brandColor,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(dW * 0.05),
@@ -62,6 +70,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
@@ -114,29 +123,33 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   width: dW,
                   color: const Color(0XFFBBBBBB),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Username:',
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                        fontSize: tS * 14,
-                        color: context.colors.heading,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: dW * 0.02),
-                      child: Text(
-                        widget.args.user.username,
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                          fontSize: tS * 12,
-                          color: context.colors.subheading,
+                if (widget.args.user.username.isNotEmpty)
+                  Row(
+                    children: [
+                      Text(
+                        'Username:',
+                        style: theme.textTheme.bodyLarge!.copyWith(
+                          fontSize: tS * 14,
+                          color: context.colors.heading,
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      Padding(
+                        padding: EdgeInsets.only(left: dW * 0.02),
+                        child: Text(
+                          widget.args.user.username,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                            fontSize: tS * 12,
+                            color: context.colors.subheading,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 Padding(
-                  padding: EdgeInsets.only(top: dW * 0.025),
+                  padding: EdgeInsets.only(
+                      top: widget.args.user.username.isNotEmpty
+                          ? dW * 0.025
+                          : 0),
                   child: Row(
                     children: [
                       Text(
@@ -159,79 +172,85 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: dW * 0.025),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Website:',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          fontSize: tS * 14,
-                          color: context.colors.heading,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: dW * 0.02),
-                        child: Text(
-                          widget.args.user.website,
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                            fontSize: tS * 12,
-                            color: context.colors.subheading,
+                if (widget.args.user.website.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: dW * 0.025),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Website:',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            fontSize: tS * 14,
+                            color: context.colors.heading,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: dW * 0.025),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Company Name:',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          fontSize: tS * 14,
-                          color: context.colors.heading,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: dW * 0.02),
-                        child: Text(
-                          widget.args.user.company.name,
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                            fontSize: tS * 12,
-                            color: context.colors.subheading,
+                        Padding(
+                          padding: EdgeInsets.only(left: dW * 0.02),
+                          child: Text(
+                            widget.args.user.website,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: tS * 12,
+                              color: context.colors.subheading,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: dW * 0.025),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Address:',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          fontSize: tS * 14,
-                          color: context.colors.heading,
-                        ),
-                      ),
-                      SizedBox(width: dW * 0.02),
-                      Flexible(
-                        child: Text(
-                          '${widget.args.user.address.suite}, ${widget.args.user.address.street}, ${widget.args.user.address.city}, ${widget.args.user.address.zipcode}',
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                            fontSize: tS * 12,
-                            color: context.colors.subheading,
+                if (widget.args.user.company.name.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: dW * 0.025),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Company Name:',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            fontSize: tS * 14,
+                            color: context.colors.heading,
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: EdgeInsets.only(left: dW * 0.02),
+                          child: Text(
+                            widget.args.user.company.name,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: tS * 12,
+                              color: context.colors.subheading,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                if (widget.args.user.address.suite.isNotEmpty &&
+                    widget.args.user.address.street.isNotEmpty &&
+                    widget.args.user.address.city.isNotEmpty &&
+                    widget.args.user.address.zipcode.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: dW * 0.025),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Address:',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            fontSize: tS * 14,
+                            color: context.colors.heading,
+                          ),
+                        ),
+                        SizedBox(width: dW * 0.02),
+                        Flexible(
+                          child: Text(
+                            '${widget.args.user.address.suite}, ${widget.args.user.address.street}, ${widget.args.user.address.city}, ${widget.args.user.address.zipcode}',
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: tS * 12,
+                              color: context.colors.subheading,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),

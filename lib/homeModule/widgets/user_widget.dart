@@ -3,9 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:userlist/theme/theme_extension.dart';
 import '../../navigation/arguments.dart';
-import '../../navigation/navigators.dart';
-import '../../navigation/routes.dart';
 import '../models/user_model.dart';
+import '../screens/user_details_screen.dart';
 
 class UserWidget extends StatefulWidget {
   final User user;
@@ -31,10 +30,28 @@ class UserWidgetState extends State<UserWidget> {
     tS = MediaQuery.of(context).textScaleFactor;
     return GestureDetector(
       onTap: () {
-        push(
-          NamedRoute.userDetailsScreen,
-          arguments: UserDetailsScreenArguments(
-            user: widget.user,
+        // push(
+        //   NamedRoute.userDetailsScreen,
+        //   arguments: UserDetailsScreenArguments(
+        //     user: widget.user,
+        //   ),
+        // );
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 800),
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                UserDetailsScreen(
+              args: UserDetailsScreenArguments(
+                user: widget.user,
+              ),
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
           ),
         );
       },

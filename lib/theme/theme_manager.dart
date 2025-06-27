@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:userlist/theme/app_color.dart';
-
 import '../storage_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
@@ -33,13 +32,6 @@ class ThemeNotifier with ChangeNotifier {
           fontFamily: 'Inter',
           color: Color(0XFF2D2D2D)),
     ),
-    // dividerColor: Colors.white54,
-    // disabledColor: Colors.purple[300],
-    // buttonTheme: const ButtonThemeData(buttonColor: context.colors.brandColor),
-    // appBarTheme: const AppBarTheme(
-    //   color: context.colors.brandColor,
-    //   iconTheme: IconThemeData(color: Colors.white),
-    // ),
   );
 
   // Dark Theme
@@ -71,14 +63,6 @@ class ThemeNotifier with ChangeNotifier {
           fontFamily: 'Inter',
           color: Color(0XFFF0F0F0)),
     ),
-
-    // dividerColor: Colors.black12,
-    // disabledColor: Colors.purple[300],
-    // buttonTheme: const ButtonThemeData(buttonColor: Colors.blueGrey),
-    // appBarTheme: const AppBarTheme(
-    //   color: Color(0xFF212121),
-    //   iconTheme: IconThemeData(color: Colors.white),
-    // ),
   );
   ThemeData? _themeData;
   ThemeData? getTheme() => _themeData;

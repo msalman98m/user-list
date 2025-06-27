@@ -33,4 +33,30 @@ class HomeProvider extends ChangeNotifier {
       };
     }
   }
+
+  addUserLocally(String name, String email, String phone) {
+    User newUser = User(
+      id: 0,
+      name: name,
+      email: email,
+      phone: phone,
+      username: '',
+      website: '',
+      address: Address(
+        street: '',
+        suite: '',
+        city: '',
+        zipcode: '',
+        geo: Geo(lat: '', lng: ''),
+      ),
+      company: Company(
+        name: '',
+        catchPhrase: '',
+        bs: '',
+      ),
+    );
+
+    _users.insert(0, newUser);
+    notifyListeners();
+  }
 }
