@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:userlist/theme/theme_extension.dart';
 import '../../commonWidgets/circular_loader.dart';
 import '../../commonWidgets/custom_textfield_widget.dart';
+import '../../commonWidgets/no_internet_widget.dart';
+import '../../connectivity_service.dart';
 import '../../navigation/navigators.dart';
 import '../providers/home_provider.dart';
 
@@ -81,6 +83,12 @@ class AddUserScreenState extends State<AddUserScreen> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     tS = MediaQuery.of(context).textScaleFactor;
+    final connectivityService = Provider.of<ConnectivityService>(context);
+    if (!connectivityService.isConnected) {
+      return const Scaffold(
+        body: NoInternetWidget(),
+      );
+    }
 
     return Scaffold(
         appBar: AppBar(

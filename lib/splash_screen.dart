@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, unused_local_variable
+// ignore_for_file: use_build_context_synchronously, unused_local_variable, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -15,6 +15,11 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   final LocalStorage storage = LocalStorage('USER_LIST');
 
+  double dW = 0.0;
+  double dH = 0.0;
+  double tS = 0.0;
+  ThemeData get theme => Theme.of(context);
+
   goToHomeScreen() {
     Future.delayed(const Duration(seconds: 2),
         () => pushAndRemoveUntil(NamedRoute.userScreen));
@@ -29,11 +34,14 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double dW = MediaQuery.of(context).size.width;
-    final double dH = MediaQuery.of(context).size.height;
-
+    dW = MediaQuery.of(context).size.width;
+    dH = MediaQuery.of(context).size.height;
+    tS = MediaQuery.of(context).textScaleFactor;
     return Scaffold(
-      body: SizedBox(
+      body: Container(
+        color: theme.brightness == Brightness.light
+            ? const Color(0XFFFFFFFF)
+            : const Color(0XFF000000),
         height: dH,
         width: dW,
         child: Center(
