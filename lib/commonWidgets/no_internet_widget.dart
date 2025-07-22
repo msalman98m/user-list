@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:userlist/theme/theme_extension.dart';
+import 'package:employeelist/theme/theme_extension.dart';
 
 class NoInternetWidget extends StatelessWidget {
   const NoInternetWidget({Key? key}) : super(key: key);

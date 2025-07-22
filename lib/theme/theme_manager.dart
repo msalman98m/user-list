@@ -1,5 +1,5 @@
+import 'package:employeelist/theme/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:userlist/theme/app_color.dart';
 import '../storage_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
@@ -17,7 +17,6 @@ class ThemeNotifier with ChangeNotifier {
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Color(0xFFF6F6F6),
     ),
-
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
           fontWeight: FontWeight.w600,
