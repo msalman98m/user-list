@@ -9,45 +9,45 @@ import '../../commonWidgets/custom_textfield_widget.dart';
 import '../../commonWidgets/no_internet_widget.dart';
 import '../../connectivity_service.dart';
 import '../../theme/theme_manager.dart';
-import '../models/user_model.dart';
+import '../models/employee_model.dart';
 import '../providers/home_provider.dart';
-import '../widgets/user_widget.dart';
+import '../widgets/employee_widget.dart';
 
-class UserScreen extends StatefulWidget {
-  const UserScreen({Key? key}) : super(key: key);
+class EmployeeScreen extends StatefulWidget {
+  const EmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  UserScreenState createState() => UserScreenState();
+  EmployeeScreenState createState() => EmployeeScreenState();
 }
 
-class UserScreenState extends State<UserScreen> {
-  final LocalStorage storage = LocalStorage('USER_LIST');
+class EmployeeScreenState extends State<EmployeeScreen> {
+  final LocalStorage storage = LocalStorage('EMPLOYEE_LIST');
 
   double dW = 0.0;
   double dH = 0.0;
   double tS = 0.0;
   ThemeData get theme => Theme.of(context);
   bool isLoading = false;
-  List<User> users = [];
+  List<Employee> employees = [];
   TextEditingController searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  List searchedUsers = [];
+  List searchedEmployees = [];
 
-  getUsers() async {
+  getEmployees() async {
     setState(() {
       isLoading = true;
     });
 
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    final response = await homeProvider.getUsers();
+    final response = await homeProvider.getEmployees();
 
     setState(() {
       isLoading = false;
     });
 
     if (response is List) {
-      users = homeProvider.users;
-      searchedUsers = users;
+      employees = homeProvider.employees;
+      searchedEmployees = employees;
     }
   }
 
@@ -55,7 +55,10 @@ class UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
-    getUsers();
+    // getEmployees();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getEmployees();
+    });
   }
 
   @override
@@ -69,12 +72,13 @@ class UserScreenState extends State<UserScreen> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     tS = MediaQuery.of(context).textScaleFactor;
-    users = Provider.of<HomeProvider>(context).users;
+    employees = Provider.of<HomeProvider>(context).employees;
     final connectivityService = Provider.of<ConnectivityService>(context);
     final switchTheme = Provider.of<ThemeNotifier>(context);
 
-    if (searchedUsers.length != users.length && searchController.text.isEmpty) {
-      searchedUsers = users;
+    if (searchedEmployees.length != employees.length &&
+        searchController.text.isEmpty) {
+      searchedEmployees = employees;
     }
 
     if (!connectivityService.isConnected) {
@@ -86,7 +90,7 @@ class UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Users',
+          'Employees',
           style: theme.textTheme.bodyLarge!.copyWith(
             fontSize: tS * 20,
             color: context.colors.brandColor,
@@ -178,13 +182,13 @@ class UserScreenState extends State<UserScreen> {
             child: CustomTextFieldWithLabel(
               textColor: const Color(0XFFFFFFFF),
               focusNode: _searchFocusNode,
-              hintText: 'Search Name',
+              hintText: 'Search Employee',
               inputType: TextInputType.name,
               borderColor: const Color(0xFFD9D9D9),
               onChanged: (value) {
                 setState(() {
-                  searchedUsers = users.where((user) {
-                    final name = user.name.toString().toLowerCase();
+                  searchedEmployees = employees.where((e) {
+                    final name = e.name.toString().toLowerCase();
                     final query = value.toLowerCase();
                     return name.contains(query);
                   }).toList();
@@ -199,7 +203,7 @@ class UserScreenState extends State<UserScreen> {
                   setState(() {
                     _searchFocusNode.unfocus();
                     searchController.clear();
-                    searchedUsers = users;
+                    searchedEmployees = employees;
                   });
                 },
                 icon: searchController.text.isEmpty
@@ -239,12 +243,12 @@ class UserScreenState extends State<UserScreen> {
                   padding: EdgeInsets.only(top: dW * 0.2),
                   child: const CircularLoader(),
                 )
-              : searchedUsers.isEmpty
+              : searchedEmployees.isEmpty
                   ? Container(
                       margin: EdgeInsets.only(top: dW * 0.2),
                       alignment: Alignment.center,
                       child: Text(
-                        'No users found!',
+                        'No employees found!',
                         style: theme.textTheme.bodyMedium!.copyWith(
                           fontSize: tS * 12,
                           color: context.colors.subheading,
@@ -254,10 +258,10 @@ class UserScreenState extends State<UserScreen> {
                   : Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: searchedUsers.length,
+                        itemCount: searchedEmployees.length,
                         physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, i) => UserWidget(
-                          user: searchedUsers[i],
+                        itemBuilder: (context, i) => EmployeeWidget(
+                          employee: searchedEmployees[i],
                         ),
                       ),
                     ),

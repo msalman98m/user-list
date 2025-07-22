@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  final LocalStorage storage = LocalStorage('USER_LIST');
+  final LocalStorage storage = LocalStorage('EMPLOYEE_LIST');
 
   double dW = 0.0;
   double dH = 0.0;

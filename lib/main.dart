@@ -10,7 +10,7 @@ import 'splash_screen.dart';
 import 'homeModule/providers/home_provider.dart';
 import 'connectivity_service.dart';
 
-final LocalStorage storage = LocalStorage('USER_LIST');
+final LocalStorage storage = LocalStorage('EMPLOYEE_LIST');
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 awaitStorageReady() async {
