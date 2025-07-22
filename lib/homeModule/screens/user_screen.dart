@@ -8,8 +8,6 @@ import '../../commonWidgets/circular_loader.dart';
 import '../../commonWidgets/custom_textfield_widget.dart';
 import '../../commonWidgets/no_internet_widget.dart';
 import '../../connectivity_service.dart';
-import '../../navigation/navigators.dart';
-import '../../navigation/routes.dart';
 import '../../theme/theme_manager.dart';
 import '../models/user_model.dart';
 import '../providers/home_provider.dart';
@@ -86,45 +84,6 @@ class UserScreenState extends State<UserScreen> {
     }
 
     return Scaffold(
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          push(NamedRoute.addUserScreen);
-        },
-        child: Container(
-          padding: EdgeInsets.all(dW * 0.03),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              context.colors.gradientOne,
-              context.colors.gradientTwo,
-            ]),
-            borderRadius: BorderRadius.circular(26),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Icon(
-                Icons.add,
-                color: Color(0xFFFFFFFF),
-                size: 19,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: dW * 0.015,
-                  right: dW * 0.01,
-                ),
-                child: Text(
-                  'User',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontSize: tS * 14,
-                        color: const Color(0xFFFFFFFF),
-                      ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       appBar: AppBar(
         title: Text(
           'Users',
