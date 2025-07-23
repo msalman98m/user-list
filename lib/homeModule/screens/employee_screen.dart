@@ -45,7 +45,7 @@ class EmployeeScreenState extends State<EmployeeScreen> {
       isLoading = false;
     });
 
-    if (response is List) {
+    if (response['success']) {
       employees = homeProvider.employees;
       searchedEmployees = employees;
     }
@@ -55,10 +55,7 @@ class EmployeeScreenState extends State<EmployeeScreen> {
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
-    // getEmployees();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      getEmployees();
-    });
+    getEmployees();
   }
 
   @override

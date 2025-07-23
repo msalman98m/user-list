@@ -1,5 +1,5 @@
-var webApi = {'domain': 'https://jsonplaceholder.typicode.com'};
+var webApi = {'domain': 'http://192.168.216.28:2424'}; // Dummy Server
 
 var endPoint = {
-  'getUsers': '/users',
+  'getEmployees': '/api/employee/getEmployees',
 };
