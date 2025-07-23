@@ -55,7 +55,9 @@ class EmployeeScreenState extends State<EmployeeScreen> {
   void initState() {
     super.initState();
     _searchFocusNode = FocusNode();
-    getEmployees();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getEmployees();
+    });
   }
 
   @override
