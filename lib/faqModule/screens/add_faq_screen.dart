@@ -8,17 +8,17 @@ import '../../commonWidgets/custom_textfield_widget.dart';
 import '../../commonWidgets/no_internet_widget.dart';
 import '../../connectivity_service.dart';
 import '../../navigation/navigators.dart';
-import '../providers/home_provider.dart';
+import '../providers/faq_provider.dart';
 
-class AddUserScreen extends StatefulWidget {
-  const AddUserScreen({super.key});
+class AddFaqScreen extends StatefulWidget {
+  const AddFaqScreen({super.key});
 
   @override
-  State<AddUserScreen> createState() => AddUserScreenState();
+  State<AddFaqScreen> createState() => AddFaqScreenState();
 }
 
-class AddUserScreenState extends State<AddUserScreen> {
-  final LocalStorage storage = LocalStorage('USER_LIST');
+class AddFaqScreenState extends State<AddFaqScreen> {
+  final LocalStorage storage = LocalStorage('FAQS');
 
   double dW = 0.0;
   double dH = 0.0;
@@ -27,16 +27,12 @@ class AddUserScreenState extends State<AddUserScreen> {
 
   bool isLoading = false;
   bool isValid = false;
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController questionController = TextEditingController();
+  TextEditingController answerController = TextEditingController();
 
   validate() {
-    if (fullNameController.text.isNotEmpty &&
-        mobileNoController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-            .hasMatch(emailController.text)) {
+    if (questionController.text.isNotEmpty &&
+        answerController.text.isNotEmpty) {
       setState(() {
         isValid = true;
       });
@@ -53,11 +49,10 @@ class AddUserScreenState extends State<AddUserScreen> {
         isLoading = true;
       });
 
-      final homeProvider = Provider.of<HomeProvider>(context, listen: false);
-      homeProvider.addUserLocally(
-        fullNameController.text.trim(),
-        emailController.text.trim(),
-        mobileNoController.text.trim(),
+      final homeProvider = Provider.of<FaqProvider>(context, listen: false);
+      homeProvider.addFaqLocally(
+        questionController.text.trim(),
+        answerController.text.trim(),
       );
 
       await Future.delayed(const Duration(seconds: 5));
@@ -73,9 +68,8 @@ class AddUserScreenState extends State<AddUserScreen> {
   @override
   void dispose() {
     super.dispose();
-    fullNameController.dispose();
-    mobileNoController.dispose();
-    emailController.dispose();
+    questionController.dispose();
+    answerController.dispose();
   }
 
   @override
@@ -93,7 +87,7 @@ class AddUserScreenState extends State<AddUserScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Add User',
+            'Add FAQ',
             style: theme.textTheme.bodyLarge!.copyWith(
               fontSize: tS * 20,
               color: context.colors.brandColor,
@@ -112,9 +106,9 @@ class AddUserScreenState extends State<AddUserScreen> {
                       Padding(
                         padding: EdgeInsets.only(top: dW * 0.02),
                         child: CustomTextFieldWithLabel(
-                          label: 'Name',
-                          hintText: 'Enter name',
-                          controller: fullNameController,
+                          label: 'Question',
+                          hintText: 'Enter question',
+                          controller: questionController,
                           borderColor: const Color(0xFFD9D9D9),
                           textCapitalization: TextCapitalization.sentences,
                           onChanged: (value) {
@@ -125,26 +119,11 @@ class AddUserScreenState extends State<AddUserScreen> {
                       Padding(
                         padding: EdgeInsets.only(top: dW * 0.05),
                         child: CustomTextFieldWithLabel(
-                          label: 'Phone Number',
-                          hintText: 'Enter phone number',
-                          controller: mobileNoController,
-                          inputType: TextInputType.number,
+                          label: 'Answer',
+                          hintText: 'Enter answer',
+                          controller: answerController,
                           borderColor: const Color(0xFFD9D9D9),
-                          maxLength: 10,
-                          onChanged: (value) {
-                            validate();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: dW * 0.05),
-                        child: CustomTextFieldWithLabel(
-                          label: 'Email',
-                          hintText: 'Enter valid email',
-                          controller: emailController,
-                          borderColor: const Color(0xFFD9D9D9),
-                          inputType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
+                          textCapitalization: TextCapitalization.sentences,
                           onChanged: (value) {
                             validate();
                           },

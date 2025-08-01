@@ -7,10 +7,10 @@ import 'package:userlist/theme/theme_manager.dart';
 
 import 'navigation/navigation_service.dart';
 import 'splash_screen.dart';
-import 'homeModule/providers/home_provider.dart';
+import 'faqModule/providers/faq_provider.dart';
 import 'connectivity_service.dart';
 
-final LocalStorage storage = LocalStorage('USER_LIST');
+final LocalStorage storage = LocalStorage('FAQS');
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 awaitStorageReady() async {
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
-        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => FaqProvider()),
         ChangeNotifierProvider(create: (_) => ConnectivityService()),
       ],
       child: Consumer<ThemeNotifier>(

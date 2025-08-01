@@ -1,8 +1,8 @@
-import '../homeModule/models/user_model.dart';
+import '../faqModule/models/user_model.dart';
 
 class UserDetailsScreenArguments {
-  final User user;
+  final Faq faq;
   const UserDetailsScreenArguments({
-    required this.user,
+    required this.faq,
   });
 }

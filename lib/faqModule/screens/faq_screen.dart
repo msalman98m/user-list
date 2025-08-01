@@ -12,44 +12,44 @@ import '../../navigation/navigators.dart';
 import '../../navigation/routes.dart';
 import '../../theme/theme_manager.dart';
 import '../models/user_model.dart';
-import '../providers/home_provider.dart';
-import '../widgets/user_widget.dart';
+import '../providers/faq_provider.dart';
+import '../widgets/faq_widget.dart';
 
-class UserScreen extends StatefulWidget {
-  const UserScreen({Key? key}) : super(key: key);
+class FaqScreen extends StatefulWidget {
+  const FaqScreen({Key? key}) : super(key: key);
 
   @override
-  UserScreenState createState() => UserScreenState();
+  FaqScreenState createState() => FaqScreenState();
 }
 
-class UserScreenState extends State<UserScreen> {
-  final LocalStorage storage = LocalStorage('USER_LIST');
+class FaqScreenState extends State<FaqScreen> {
+  final LocalStorage storage = LocalStorage('FAQS');
 
   double dW = 0.0;
   double dH = 0.0;
   double tS = 0.0;
   ThemeData get theme => Theme.of(context);
   bool isLoading = false;
-  List<User> users = [];
+  List<Faq> faqs = [];
   TextEditingController searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  List searchedUsers = [];
+  List searchedFaqs = [];
 
   getUsers() async {
     setState(() {
       isLoading = true;
     });
 
-    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    final response = await homeProvider.getUsers();
+    final homeProvider = Provider.of<FaqProvider>(context, listen: false);
+    final response = await homeProvider.fetchFaq();
 
     setState(() {
       isLoading = false;
     });
 
     if (response is List) {
-      users = homeProvider.users;
-      searchedUsers = users;
+      faqs = homeProvider.faqs;
+      searchedFaqs = faqs;
     }
   }
 
@@ -71,12 +71,12 @@ class UserScreenState extends State<UserScreen> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     tS = MediaQuery.of(context).textScaleFactor;
-    users = Provider.of<HomeProvider>(context).users;
+    faqs = Provider.of<FaqProvider>(context).faqs;
     final connectivityService = Provider.of<ConnectivityService>(context);
     final switchTheme = Provider.of<ThemeNotifier>(context);
 
-    if (searchedUsers.length != users.length && searchController.text.isEmpty) {
-      searchedUsers = users;
+    if (searchedFaqs.length != faqs.length && searchController.text.isEmpty) {
+      searchedFaqs = faqs;
     }
 
     if (!connectivityService.isConnected) {
@@ -88,7 +88,7 @@ class UserScreenState extends State<UserScreen> {
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () {
-          push(NamedRoute.addUserScreen);
+          push(NamedRoute.addFaqScreen);
         },
         child: Container(
           padding: EdgeInsets.all(dW * 0.03),
@@ -114,11 +114,11 @@ class UserScreenState extends State<UserScreen> {
                   right: dW * 0.01,
                 ),
                 child: Text(
-                  'User',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontSize: tS * 14,
-                        color: const Color(0xFFFFFFFF),
-                      ),
+                  'FAQ',
+                  style: theme.textTheme.bodyLarge!.copyWith(
+                    fontSize: tS * 14,
+                    color: const Color(0xFFFFFFFF),
+                  ),
                 ),
               ),
             ],
@@ -127,7 +127,7 @@ class UserScreenState extends State<UserScreen> {
       ),
       appBar: AppBar(
         title: Text(
-          'Users',
+          'FAQs',
           style: theme.textTheme.bodyLarge!.copyWith(
             fontSize: tS * 20,
             color: context.colors.brandColor,
@@ -219,13 +219,13 @@ class UserScreenState extends State<UserScreen> {
             child: CustomTextFieldWithLabel(
               textColor: const Color(0XFFFFFFFF),
               focusNode: _searchFocusNode,
-              hintText: 'Search Name',
+              hintText: 'Search',
               inputType: TextInputType.name,
               borderColor: const Color(0xFFD9D9D9),
               onChanged: (value) {
                 setState(() {
-                  searchedUsers = users.where((user) {
-                    final name = user.name.toString().toLowerCase();
+                  searchedFaqs = faqs.where((faq) {
+                    final name = faq.question.toString().toLowerCase();
                     final query = value.toLowerCase();
                     return name.contains(query);
                   }).toList();
@@ -240,7 +240,7 @@ class UserScreenState extends State<UserScreen> {
                   setState(() {
                     _searchFocusNode.unfocus();
                     searchController.clear();
-                    searchedUsers = users;
+                    searchedFaqs = faqs;
                   });
                 },
                 icon: searchController.text.isEmpty
@@ -280,12 +280,12 @@ class UserScreenState extends State<UserScreen> {
                   padding: EdgeInsets.only(top: dW * 0.2),
                   child: const CircularLoader(),
                 )
-              : searchedUsers.isEmpty
+              : searchedFaqs.isEmpty
                   ? Container(
                       margin: EdgeInsets.only(top: dW * 0.2),
                       alignment: Alignment.center,
                       child: Text(
-                        'No users found!',
+                        'No faqs found!',
                         style: theme.textTheme.bodyMedium!.copyWith(
                           fontSize: tS * 12,
                           color: context.colors.subheading,
@@ -295,11 +295,16 @@ class UserScreenState extends State<UserScreen> {
                   : Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: searchedUsers.length,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, i) => UserWidget(
-                          user: searchedUsers[i],
-                        ),
+                        padding: EdgeInsets.only(
+                            bottom: dW * 0.05,
+                            left: dW * 0.04,
+                            right: dW * 0.04),
+                        itemCount: searchedFaqs.length,
+                        itemBuilder: (context, index) {
+                          final faq = faqs[index];
+                          return FaqWidget(
+                              question: faq.question, answer: faq.answer);
+                        },
                       ),
                     ),
         ],

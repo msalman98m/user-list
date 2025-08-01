@@ -1,5 +1,5 @@
-var webApi = {'domain': 'https://jsonplaceholder.typicode.com'};
+var webApi = {'domain': 'https://api.ahci.company'};
 
 var endPoint = {
-  'getUsers': '/users',
+  'fetchFaqs': '/api/faq/fetchFaqs',
 };

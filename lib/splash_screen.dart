@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  final LocalStorage storage = LocalStorage('USER_LIST');
+  final LocalStorage storage = LocalStorage('FAQS');
 
   double dW = 0.0;
   double dH = 0.0;
@@ -22,7 +22,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   goToHomeScreen() {
     Future.delayed(const Duration(seconds: 2),
-        () => pushAndRemoveUntil(NamedRoute.userScreen));
+        () => pushAndRemoveUntil(NamedRoute.faqScreen));
   }
 
   @override
