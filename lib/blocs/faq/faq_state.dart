@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../faqModule/models/user_model.dart';
+import '../../faqModule/models/faq_model.dart';
 
 // States
 abstract class FaqState extends Equatable {

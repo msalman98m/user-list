@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../api.dart';
 import '../../http_helper.dart';
-import '../../faqModule/models/user_model.dart';
+import '../../faqModule/models/faq_model.dart';
 import 'faq_event.dart';
 import 'faq_state.dart';
 

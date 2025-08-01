@@ -1,4 +1,4 @@
-import '../faqModule/models/user_model.dart';
+import '../faqModule/models/faq_model.dart';
 
 class UserDetailsScreenArguments {
   final Faq faq;

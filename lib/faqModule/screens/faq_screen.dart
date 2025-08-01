@@ -16,7 +16,7 @@ import '../../blocs/faq/faq_state.dart';
 import '../../blocs/faq/faq_event.dart';
 import '../../navigation/navigators.dart';
 import '../../navigation/routes.dart';
-import '../models/user_model.dart';
+import '../models/faq_model.dart';
 import '../widgets/faq_widget.dart';
 
 class FaqScreen extends StatefulWidget {
