@@ -31,22 +31,13 @@ class FaqScreenState extends State<FaqScreen> {
   double dH = 0.0;
   double tS = 0.0;
   ThemeData get theme => Theme.of(context);
-  bool isLoading = false;
   List<Faq> faqs = [];
   TextEditingController searchController = TextEditingController();
   late FocusNode _searchFocusNode;
   List searchedFaqs = [];
 
   getFaqs() async {
-    setState(() {
-      isLoading = true;
-    });
-
     context.read<FaqBloc>().add(FetchFaqs());
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -76,19 +67,19 @@ class FaqScreenState extends State<FaqScreen> {
           );
         }
 
-        return BlocBuilder<FaqBloc, FaqState>(
-          builder: (context, faqState) {
-            if (faqState is FaqLoaded) {
-              faqs = faqState.faqs;
-              if (searchedFaqs.length != faqs.length &&
-                  searchController.text.isEmpty) {
-                searchedFaqs = faqs;
-              }
-            }
+        return BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, themeState) {
+            final switchTheme = context.read<ThemeBloc>();
 
-            return BlocBuilder<ThemeBloc, ThemeState>(
-              builder: (context, themeState) {
-                final switchTheme = context.read<ThemeBloc>();
+            return BlocBuilder<FaqBloc, FaqState>(
+              builder: (context, faqState) {
+                if (faqState is FaqLoaded) {
+                  faqs = faqState.faqs;
+                  if (searchedFaqs.length != faqs.length &&
+                      searchController.text.isEmpty) {
+                    searchedFaqs = faqs;
+                  }
+                }
 
                 return Scaffold(
                   floatingActionButton: GestureDetector(
