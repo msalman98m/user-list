@@ -42,7 +42,7 @@ class AddFaqScreenState extends State<AddFaqScreen> {
     }
   }
 
-  saveUser() async {
+  saveFaq() async {
     if (isValid) {
       setState(() {
         isLoading = true;
@@ -136,7 +136,7 @@ class AddFaqScreenState extends State<AddFaqScreen> {
               ),
               if (isValid)
                 GestureDetector(
-                  onTap: saveUser,
+                  onTap: saveFaq,
                   child: Container(
                     alignment: Alignment.center,
                     width: dW,
