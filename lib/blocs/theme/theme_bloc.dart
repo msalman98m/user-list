@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:userlist/theme/app_color.dart';
-import '../storage_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../storage_manager.dart';
+import '../../theme/app_color.dart';
+import 'theme_event.dart';
+import 'theme_state.dart';
 
-class ThemeNotifier with ChangeNotifier {
+// BLoC
+class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
+  ThemeBloc() : super(ThemeInitial()) {
+    on<LoadTheme>(_onLoadTheme);
+    on<SetDarkMode>(_onSetDarkMode);
+    on<SetLightMode>(_onSetLightMode);
+  }
+
   // Light Theme
   final lightTheme = ThemeData(
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -17,7 +27,6 @@ class ThemeNotifier with ChangeNotifier {
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Color(0xFFF6F6F6),
     ),
-
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
           fontWeight: FontWeight.w600,
@@ -64,30 +73,26 @@ class ThemeNotifier with ChangeNotifier {
           color: Color(0XFFF0F0F0)),
     ),
   );
-  ThemeData? _themeData;
-  ThemeData? getTheme() => _themeData;
 
-  ThemeNotifier() {
-    StorageManager.readData('themeMode').then((value) {
-      var themeMode = value ?? 'light';
-      if (themeMode == 'light') {
-        _themeData = lightTheme;
-      } else {
-        _themeData = darkTheme;
-      }
-      notifyListeners();
-    });
+  Future<void> _onLoadTheme(LoadTheme event, Emitter<ThemeState> emit) async {
+    final value = await StorageManager.readData('themeMode');
+    var themeMode = value ?? 'light';
+    if (themeMode == 'light') {
+      emit(ThemeLoaded(themeData: lightTheme, isDarkMode: false));
+    } else {
+      emit(ThemeLoaded(themeData: darkTheme, isDarkMode: true));
+    }
   }
 
-  void setDarkMode() async {
-    _themeData = darkTheme;
+  Future<void> _onSetDarkMode(
+      SetDarkMode event, Emitter<ThemeState> emit) async {
     StorageManager.saveData('themeMode', 'dark');
-    notifyListeners();
+    emit(ThemeLoaded(themeData: darkTheme, isDarkMode: true));
   }
 
-  void setLightMode() async {
-    _themeData = lightTheme;
+  Future<void> _onSetLightMode(
+      SetLightMode event, Emitter<ThemeState> emit) async {
     StorageManager.saveData('themeMode', 'light');
-    notifyListeners();
+    emit(ThemeLoaded(themeData: lightTheme, isDarkMode: false));
   }
 }

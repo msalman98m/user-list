@@ -2,13 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:provider/provider.dart';
-import 'package:userlist/theme/theme_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:userlist/blocs/theme/theme_bloc.dart';
+import 'package:userlist/blocs/theme/theme_state.dart';
+import 'package:userlist/blocs/theme/theme_event.dart';
+import 'package:userlist/blocs/faq/faq_bloc.dart';
+import 'package:userlist/blocs/connectivity/connectivity_bloc.dart';
 
 import 'navigation/navigation_service.dart';
 import 'splash_screen.dart';
-import 'faqModule/providers/faq_provider.dart';
-import 'connectivity_service.dart';
 
 final LocalStorage storage = LocalStorage('FAQS');
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -36,14 +38,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
-        ChangeNotifierProvider(create: (_) => FaqProvider()),
-        ChangeNotifierProvider(create: (_) => ConnectivityService()),
+        BlocProvider(create: (_) => ThemeBloc()..add(LoadTheme())),
+        BlocProvider(create: (_) => FaqBloc()),
+        BlocProvider(create: (_) => ConnectivityBloc()),
       ],
-      child: Consumer<ThemeNotifier>(
-        builder: (context, theme, _) => MaterialApp(
+      child: BlocSelector<ThemeBloc, ThemeState, ThemeData>(
+        selector: (state) =>
+            state is ThemeLoaded ? state.themeData : ThemeData.light(),
+        builder: (context, themeData) {
+          return MaterialApp(
             navigatorKey: navigatorKey,
             builder: (context, child) {
               return MediaQuery(
@@ -53,13 +58,15 @@ class _MyAppState extends State<MyApp> {
               );
             },
             title: 'User List',
-            theme: theme.getTheme(),
+            theme: themeData,
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             onGenerateRoute: generateRoute,
             routes: {
               '/': (BuildContext context) => const SplashScreen(),
-            }),
+            },
+          );
+        },
       ),
     );
   }

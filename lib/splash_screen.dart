@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 
 import 'navigation/navigators.dart';
 import 'navigation/routes.dart';
@@ -13,8 +12,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  final LocalStorage storage = LocalStorage('FAQS');
-
   double dW = 0.0;
   double dH = 0.0;
   double tS = 0.0;
