@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, deprecated_member_use
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:userlist/theme/theme_extension.dart';
@@ -132,7 +133,11 @@ class FaqScreenState extends State<FaqScreen> {
                     ),
                     actions: [
                       Padding(
-                        padding: EdgeInsets.only(right: dW * 0.05),
+                        padding: EdgeInsets.only(
+                          right: dW * 0.05,
+                          top: kIsWeb ? dW * 0.01 : 0,
+                          bottom: kIsWeb ? dW * 0.01 : 0,
+                        ),
                         child: Row(
                           children: [
                             GestureDetector(
