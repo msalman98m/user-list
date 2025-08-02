@@ -10,6 +10,7 @@ import '../../blocs/connectivity/connectivity_state.dart';
 import '../../blocs/faq/faq_bloc.dart';
 import '../../blocs/faq/faq_event.dart';
 import '../../navigation/navigators.dart';
+import '../../utils/responsive_utils.dart';
 
 class AddFaqScreen extends StatefulWidget {
   const AddFaqScreen({super.key});
@@ -84,7 +85,7 @@ class AddFaqScreenState extends State<AddFaqScreen> {
           );
         }
 
-        return Scaffold(
+        Widget scaffoldContent = Scaffold(
           appBar: AppBar(
             title: Text(
               'Add FAQ',
@@ -94,75 +95,94 @@ class AddFaqScreenState extends State<AddFaqScreen> {
               ),
             ),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(dW * 0.05),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: dW * 0.02),
-                          child: CustomTextFieldWithLabel(
-                            label: 'Question',
-                            hintText: 'Enter question',
-                            controller: questionController,
-                            borderColor: const Color(0xFFD9D9D9),
-                            textCapitalization: TextCapitalization.sentences,
-                            onChanged: (value) {
-                              validate();
-                            },
-                          ),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(dW * 0.05),
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height * 0.6,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: dW * 0.05),
-                          child: CustomTextFieldWithLabel(
-                            label: 'Answer',
-                            hintText: 'Enter answer',
-                            controller: answerController,
-                            borderColor: const Color(0xFFD9D9D9),
-                            textCapitalization: TextCapitalization.sentences,
-                            onChanged: (value) {
-                              validate();
-                            },
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: dW * 0.02),
+                              child: CustomTextFieldWithLabel(
+                                label: 'Question',
+                                hintText: 'Enter question',
+                                controller: questionController,
+                                borderColor: const Color(0xFFD9D9D9),
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                onChanged: (value) {
+                                  validate();
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: dW * 0.05),
+                              child: CustomTextFieldWithLabel(
+                                label: 'Answer',
+                                hintText: 'Enter answer',
+                                controller: answerController,
+                                borderColor: const Color(0xFFD9D9D9),
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                onChanged: (value) {
+                                  validate();
+                                },
+                              ),
+                            ),
+                            // Add some bottom padding to ensure save button doesn't overlap
+                            SizedBox(height: dW * 0.1),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              if (isValid)
-                GestureDetector(
-                  onTap: saveFaq,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: dW,
-                    margin: EdgeInsets.all(dW * 0.05),
-                    padding: EdgeInsets.all(dW * 0.04),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(colors: [
-                          context.colors.gradientOne,
-                          context.colors.gradientTwo,
-                        ])),
-                    child: isLoading
-                        ? const CircularLoader(
-                            color: Color(0XFFFFFFFF),
-                          )
-                        : Text(
-                            'Save',
-                            style: theme.textTheme.bodyLarge!.copyWith(
-                              fontSize: tS * 16,
-                              color: const Color(0XFFFFFFFF),
-                            ),
-                          ),
+                if (isValid)
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(dW * 0.05),
+                    child: GestureDetector(
+                      onTap: saveFaq,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(dW * 0.04),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: LinearGradient(colors: [
+                              context.colors.gradientOne,
+                              context.colors.gradientTwo,
+                            ])),
+                        child: isLoading
+                            ? const CircularLoader(
+                                color: Color(0XFFFFFFFF),
+                              )
+                            : Text(
+                                'Save',
+                                style: theme.textTheme.bodyLarge!.copyWith(
+                                  fontSize: tS * 16,
+                                  color: const Color(0XFFFFFFFF),
+                                ),
+                              ),
+                      ),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
+        );
+
+        return ResponsiveUtils.getResponsiveContainer(
+          context,
+          scaffoldContent,
         );
       },
     );

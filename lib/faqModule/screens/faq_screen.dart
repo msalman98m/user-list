@@ -16,6 +16,7 @@ import '../../blocs/faq/faq_state.dart';
 import '../../blocs/faq/faq_event.dart';
 import '../../navigation/navigators.dart';
 import '../../navigation/routes.dart';
+import '../../utils/responsive_utils.dart';
 import '../models/faq_model.dart';
 import '../widgets/faq_widget.dart';
 
@@ -81,7 +82,7 @@ class FaqScreenState extends State<FaqScreen> {
                   }
                 }
 
-                return Scaffold(
+                Widget scaffoldContent = Scaffold(
                   floatingActionButton: GestureDetector(
                     onTap: () {
                       push(NamedRoute.addFaqScreen);
@@ -217,105 +218,113 @@ class FaqScreenState extends State<FaqScreen> {
                       ),
                     ],
                   ),
-                  body: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(dW * 0.05),
-                        child: CustomTextFieldWithLabel(
-                          textColor: const Color(0XFFFFFFFF),
-                          focusNode: _searchFocusNode,
-                          hintText: 'Search',
-                          inputType: TextInputType.name,
-                          borderColor: const Color(0xFFD9D9D9),
-                          onChanged: (value) {
-                            setState(() {
-                              searchedFaqs = faqs.where((faq) {
-                                final name =
-                                    faq.question.toString().toLowerCase();
-                                final query = value.toLowerCase();
-                                return name.contains(query);
-                              }).toList();
-                            });
-                          },
-                          suffixIconConstraints: const BoxConstraints(),
-                          suffixIcon: IconButton(
-                            focusColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onPressed: () {
+                  body: SafeArea(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(dW * 0.05),
+                          child: CustomTextFieldWithLabel(
+                            textColor: const Color(0XFFFFFFFF),
+                            focusNode: _searchFocusNode,
+                            hintText: 'Search',
+                            inputType: TextInputType.name,
+                            borderColor: const Color(0xFFD9D9D9),
+                            onChanged: (value) {
                               setState(() {
-                                _searchFocusNode.unfocus();
-                                searchController.clear();
-                                searchedFaqs = faqs;
+                                searchedFaqs = faqs.where((faq) {
+                                  final name =
+                                      faq.question.toString().toLowerCase();
+                                  final query = value.toLowerCase();
+                                  return name.contains(query);
+                                }).toList();
                               });
                             },
-                            icon: searchController.text.isEmpty
-                                ? const SizedBox.shrink()
-                                : const Icon(
-                                    Icons.clear,
-                                    color: Color(0XFFFFFFFF),
-                                    size: 23,
-                                  ),
-                          ),
-                          controller: searchController,
-                          prefixIcon: SizedBox(
-                            width: dW * 0.15,
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: dW * 0.05),
-                                  color: Colors.transparent,
-                                  child: AssetSvgIcon(
-                                    'search',
-                                    width: dW * 0.06,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        context.colors.gradientOne,
-                                        context.colors.gradientTwo,
-                                      ],
+                            suffixIconConstraints: const BoxConstraints(),
+                            suffixIcon: IconButton(
+                              focusColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onPressed: () {
+                                setState(() {
+                                  _searchFocusNode.unfocus();
+                                  searchController.clear();
+                                  searchedFaqs = faqs;
+                                });
+                              },
+                              icon: searchController.text.isEmpty
+                                  ? const SizedBox.shrink()
+                                  : const Icon(
+                                      Icons.clear,
+                                      color: Color(0XFFFFFFFF),
+                                      size: 23,
+                                    ),
+                            ),
+                            controller: searchController,
+                            prefixIcon: SizedBox(
+                              width: dW * 0.15,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: dW * 0.05),
+                                    color: Colors.transparent,
+                                    child: AssetSvgIcon(
+                                      'search',
+                                      width: dW * 0.06,
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          context.colors.gradientOne,
+                                          context.colors.gradientTwo,
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      faqState is FaqLoading
-                          ? Container(
-                              padding: EdgeInsets.only(top: dW * 0.2),
-                              child: const CircularLoader(),
-                            )
-                          : searchedFaqs.isEmpty
+                        Expanded(
+                          child: faqState is FaqLoading
                               ? Container(
-                                  margin: EdgeInsets.only(top: dW * 0.2),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'No faqs found!',
-                                    style: theme.textTheme.bodyMedium!.copyWith(
-                                      fontSize: tS * 12,
-                                      color: context.colors.subheading,
-                                    ),
-                                  ),
+                                  padding: EdgeInsets.only(top: dW * 0.2),
+                                  child: const CircularLoader(),
                                 )
-                              : Expanded(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.only(
-                                        bottom: dW * 0.05,
-                                        left: dW * 0.04,
-                                        right: dW * 0.04),
-                                    itemCount: searchedFaqs.length,
-                                    itemBuilder: (context, index) {
-                                      final faq = searchedFaqs[index];
-                                      return FaqWidget(
-                                          question: faq.question,
-                                          answer: faq.answer);
-                                    },
-                                  ),
-                                ),
-                    ],
+                              : searchedFaqs.isEmpty
+                                  ? Container(
+                                      margin: EdgeInsets.only(top: dW * 0.2),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'No faqs found!',
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                          fontSize: tS * 12,
+                                          color: context.colors.subheading,
+                                        ),
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.only(
+                                          bottom: dW * 0.05,
+                                          left: dW * 0.04,
+                                          right: dW * 0.04),
+                                      itemCount: searchedFaqs.length,
+                                      itemBuilder: (context, index) {
+                                        final faq = searchedFaqs[index];
+                                        return FaqWidget(
+                                            question: faq.question,
+                                            answer: faq.answer);
+                                      },
+                                    ),
+                        ),
+                      ],
+                    ),
                   ),
+                );
+
+                return ResponsiveUtils.getResponsiveContainer(
+                  context,
+                  scaffoldContent,
                 );
               },
             );

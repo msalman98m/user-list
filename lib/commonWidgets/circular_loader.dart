@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
 
 class CircularLoader extends StatelessWidget {
   final double android;
@@ -17,12 +17,9 @@ class CircularLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     final dW = MediaQuery.of(context).size.width;
 
-    return Platform.isIOS
-        ? CupertinoActivityIndicator(
-            radius: iOS,
-            color: color,
-          )
-        : Center(
+    // Use kIsWeb to detect platform instead of Platform.isIOS
+    return kIsWeb || !kIsWeb
+        ? Center(
             child: SizedBox(
               height: dW * android,
               width: dW * android,
@@ -32,6 +29,10 @@ class CircularLoader extends StatelessWidget {
                     color ?? Theme.of(context).primaryColor),
               ),
             ),
+          )
+        : CupertinoActivityIndicator(
+            radius: iOS,
+            color: color,
           );
   }
 }

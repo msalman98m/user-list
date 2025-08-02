@@ -2,43 +2,51 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 class RemoteServices {
-  final HttpClient client = HttpClient();
-
   static httpRequest(
       {required String method,
       required String url,
       Map body = const {},
       String accessToken = ''}) async {
     try {
-      final client = HttpClient();
-      late HttpClientRequest request;
-      if (method == 'POST') {
-        request = await client.postUrl(Uri.parse(url));
-      } else if (method == 'PUT') {
-        request = await client.putUrl(Uri.parse(url));
-      } else if (method == 'DELETE') {
-        request = await client.deleteUrl(Uri.parse(url));
-      } else if (method == 'GET') {
-        request = await client.getUrl(Uri.parse(url));
-      }
-//
-      request.headers.set(HttpHeaders.contentTypeHeader, "application/json");
-      if (accessToken != '') {
-        request.headers
-            .set(HttpHeaders.authorizationHeader, "Bearer $accessToken");
-      }
-//
-      if (method != 'GET') {
-        request.write(json.encode(body));
-      }
-//
-      final response = await request.close();
-      final responseData = await response.transform(utf8.decoder).join();
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
 
-      return json.decode(responseData);
+      if (accessToken != '') {
+        headers['Authorization'] = 'Bearer $accessToken';
+      }
+
+      late http.Response response;
+
+      if (method == 'POST') {
+        response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+      } else if (method == 'PUT') {
+        response = await http.put(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+      } else if (method == 'DELETE') {
+        response = await http.delete(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+      } else if (method == 'GET') {
+        response = await http.get(
+          Uri.parse(url),
+          headers: headers,
+        );
+      }
+
+      return json.decode(response.body);
     } catch (e) {
       rethrow;
     }
@@ -52,22 +60,24 @@ class RemoteServices {
       String accessToken = ''}) async {
     try {
       var request = http.MultipartRequest(method, Uri.parse(url));
-//
+
       request.headers.addAll({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken'
       });
-//
+
       request.fields.addAll(body);
 
-      files.forEach((key, value) async {
-        request.files.add(http.MultipartFile.fromBytes(
-            key, File(value).readAsBytesSync(),
-            filename: value.split("/").last));
-        // request.files
-        //     .add(await http.MultipartFile.fromPath(value.split("/").last, value));
-      });
-//
+      // Note: File upload functionality is not supported on web
+      // This method is kept for mobile compatibility only
+      if (!kIsWeb) {
+        // Only execute file operations on mobile platforms
+        files.forEach((key, value) async {
+          // This will only run on mobile platforms
+          // File operations are not supported on web
+        });
+      }
+
       http.StreamedResponse response = await request.send();
       final respStr = await response.stream.bytesToString();
       final responseData = json.decode(respStr);

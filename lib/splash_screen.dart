@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'navigation/navigators.dart';
 import 'navigation/routes.dart';
+import 'utils/responsive_utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -34,7 +35,8 @@ class SplashScreenState extends State<SplashScreen> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     tS = MediaQuery.of(context).textScaleFactor;
-    return Scaffold(
+
+    Widget scaffoldContent = Scaffold(
       body: Container(
         color: theme.brightness == Brightness.light
             ? const Color(0XFFFFFFFF)
@@ -49,6 +51,11 @@ class SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ),
+    );
+
+    return ResponsiveUtils.getResponsiveContainer(
+      context,
+      scaffoldContent,
     );
   }
 }
